@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToOne, JoinColumn } from 'typeorm';
 import { Model } from './model.entity';
-import { ObjectType, Field, ID } from 'type-graphql';
+import { ObjectType, Field, ID, Int } from 'type-graphql';
 import { Vehicle } from './vehicle.entity';
 
 @ObjectType()
@@ -19,6 +19,7 @@ export class Brand {
     @JoinColumn({ name: 'id_vehicle' })
     vehicle: Vehicle;
 
+    @Field(type => Int)
     @JoinColumn({ name: 'id_vehicle' })
     idVehicle: number;
 
@@ -28,7 +29,8 @@ export class Brand {
     )
     @JoinColumn({ name: 'id_model' })
     models: Model[];
-
+    
+    @Field(type => Int)
     @JoinColumn({ name: 'id_model' })
     idModel: number;
 }

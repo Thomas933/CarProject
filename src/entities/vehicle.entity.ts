@@ -4,13 +4,15 @@ import {
     Column,
     OneToMany,
     JoinColumn,
+    Index,
 } from 'typeorm';
 import { Brand } from './brand.entity';
-import { ObjectType, Field, ID } from 'type-graphql';
+import { ObjectType, Field, ID, Int, registerEnumType } from 'type-graphql';
+import { VehicleType } from '../enums/vehicle.enum';
 
-enum CarType {
-    CAR = 'car',
-}
+registerEnumType(VehicleType, {
+    name: 'VehicleType',
+});
 
 @ObjectType()
 @Entity('vehicles')
@@ -19,18 +21,23 @@ export class Vehicle {
     @PrimaryGeneratedColumn()
     readonly id: number;
 
-    @Field(type => CarType)
-    @Column({ type: 'enum', default: CarType.CAR, enum: CarType })
-    type: CarType;
+    @Field(type => VehicleType)
+    @Index({ unique: true })
+    @Column({ type: 'enum', enum: VehicleType, default: VehicleType.CAR })
+    type: VehicleType;
 
-    @Field(type => [Brand])
-    @JoinColumn({ name: 'id_model' })
+    @Field(type => [Brand], {nullable: true})
     @OneToMany(
         type => Brand,
         brand => brand.vehicle
     )
-    brands: Brand[];
-
+    @JoinColumn({
+        name: 'id_model',
+        referencedColumnName: 'id_vehicle',
+      })
+    brands?: Brand[];
+    
+    @Field(type => Int)
     @JoinColumn({ name: 'id_model' })
     idModel: number;
 }

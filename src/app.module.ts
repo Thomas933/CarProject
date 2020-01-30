@@ -1,9 +1,22 @@
+import { ModelYearModule } from './modelYear/model-year.module';
+import { ModelModule } from './model/model.module';
+import { BrandModule } from './brand/brand.module';
+import { VehicleModule } from './vehicle/vehicle.module';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { GraphQLModule } from '@nestjs/graphql';
+import { ENTITIES } from './shared/entities';    
 
 @Module({
     imports: [
+        ModelYearModule, 
+        ModelModule, 
+        BrandModule,
+        VehicleModule,
+        GraphQLModule.forRoot({
+            playground: true,
+            autoSchemaFile: 'schema.gql'
+        }),
         TypeOrmModule.forRoot({
             type: 'mysql',
             host: 'localhost',
@@ -11,14 +24,9 @@ import { GraphQLModule } from '@nestjs/graphql';
             username: 'root',
             password: 'root',
             database: 'car-project',
-            entities: [],
+            entities: ENTITIES,
             synchronize: false,
         }),
-        GraphQLModule.forRoot({
-            debug: false,
-            playground: false,
-            autoSchemaFile: 'schema.gql',
-          }),
-    ]
+    ],
 })
 export class AppModule {}
