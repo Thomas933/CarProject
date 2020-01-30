@@ -7,7 +7,7 @@ module.exports = [
         username: 'root',
         password: 'root',
         database: 'car-project',
-        synchronize: true,
+        synchronize: false,
         entities: ['src/entities/*.ts'],
         migrations: ['src/migrations/*.ts'],
         cli: {
